@@ -7,21 +7,30 @@ var awsConfig = {
 AWS.config.update(awsConfig);
 
 var docClient = new AWS.DynamoDB.DocumentClient();
-fetchOneByKey = function () {
+
+var modify = function () {
+
+
     var params = {
         TableName: "sampletable",
         Key: {
             "name": "John Mayo-Smith",
             "city": "New York"
-        }
+        },
+        UpdateExpression: "set food= :newFood",
+        ExpressionAttributeValues: {
+            ":newFood": "greninja"
+        },
+        ReturnValues: "UPDATED_NEW"
+
     };
-    docClient.get(params, function (err, data) {
+    docClient.update(params, function (err, data) {
+
         if (err) {
-            console.log("users::fetchOneByKey::error - " + JSON.stringify(err, null, 2));
+            console.log("users::update::error - " + JSON.stringify(err, null, 2));
+        } else {
+            console.log("users::update::success "+JSON.stringify(data) );
         }
-        else {
-            console.log(JSON.stringify(data, null, 2));
-        }
-    })
+    });
 }
-module.exports.fetchOneByKey = fetchOneByKey
+module.exports.modify = modify

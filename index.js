@@ -1,11 +1,15 @@
 const read = require('./app/read')
+const update = require('./app/update')
+const create = require('./app/create')
+const deleter =  require('./app/delete')
 const path = require('path')
 const express = require('express')
 const exphbs = require('express-handlebars')
+var bodyParser = require('body-parser');
 const port = 8080
 
 const app = express()
-
+app.use(bodyParser.urlencoded({ extended: true }));
 app.engine('.hbs', exphbs({
   defaultLayout: 'main',
   extname: '.hbs',
@@ -22,6 +26,33 @@ app.get('/', (request, response) => {
 
 app.get('/read', (request, response) => {
   read.fetchOneByKey();
+  response.render('home', {
+    name: 'John'
+  })
+})
+
+app.get('/update', (request, response) => {
+  update.modify();
+  response.render('home', {
+    name: 'John'
+  })
+})
+
+app.post('/createForm', (request, response) => {
+  create.save(request.body.name,request.body.city,request.body.food)
+  response.render('home', {
+    name: 'John'
+  })
+})
+
+app.get('/create', (request, response) => {
+  response.render('create', {
+  })
+})
+
+
+app.get('/delete', (request, response) => {
+  deleter.remove();
   response.render('home', {
     name: 'John'
   })
