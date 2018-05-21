@@ -24,10 +24,13 @@ app.get('/', (request, response) => {
   })
 })
 
+app.post('/readForm', (request, response) => {
+  read.fetchOneByKey(request.body.name,request.body.city)
+  response.redirect('/');
+})
+
 app.get('/read', (request, response) => {
-  read.fetchOneByKey();
-  response.render('home', {
-    name: 'John'
+  response.render('readForm', {
   })
 })
 
@@ -40,13 +43,11 @@ app.get('/update', (request, response) => {
 
 app.post('/createForm', (request, response) => {
   create.save(request.body.name,request.body.city,request.body.food)
-  response.render('home', {
-    name: 'John'
-  })
+   response.redirect('/');
 })
 
 app.get('/create', (request, response) => {
-  response.render('create', {
+  response.render('createForm', {
   })
 })
 
